@@ -3,10 +3,14 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   app = express();
 
+
+var articles = [];
+
+
 app.use(bodyParser.urlencoded());
 app.set('view engine', 'ejs');
 
-var articles = [];
+
 
 //homepage
 app.get('/', function (req, res) {
@@ -15,7 +19,7 @@ app.get('/', function (req, res) {
 
 //summary of articles
 app.get('/articles', function (req, res) {
-  res.render('articles/index', {articles: articles});
+  res.render('articles/articles', {articles: articles});
 });
 
 //form to add new articles
@@ -23,14 +27,18 @@ app.get('/articles/new', function (req, res) {
   res.render('articles/new');
 });
 
+//'show' page shows articles based on index in array
 app.get('/articles/:id', function (req, res) {
-  var id = req.params.id;
+  var index = req.params.id;
   var article = articles[index];
-  // res.render()
+  res.render('articles/show', {article: article});
 });
 
+
 app.post('/articles', function (req, res) {
-  articles.push(req.body.articles);
+  // console.log(req.body.article);
+  articles.push(req.body.article);
+  // console.log(articles);
   res.redirect('/articles/new')
 })
 
